@@ -1,0 +1,8 @@
+- name: put timezone file
+  template: src=timezone dest=/etc/timezone
+  register: result
+  
+- name: dpkg-reconfigure for timezone
+  shell: dpkg-reconfigure --frontend noninteractive tzdata
+  when: result.changed
+  
