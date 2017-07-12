@@ -1,17 +1,3 @@
-- name: put timezone file
-  template: src=timezone dest=/etc/timezone
-  when: ansible_os_family in ["Debian","Gentoo"]
-  register: result
-
-- name: set tomezone on Redhat
-  shell: timedatectl set-timezone {{ timezone }}
-  when: ansible_os_family == "RedHat" or (ansible_distribution == "Ubuntu" and ansible_distribution_version == "16.04")
-
-- name: reconfigure for timezone on Debian
-  shell: dpkg-reconfigure --frontend noninteractive tzdata
-  when: result.changed and ansible_os_family == "Debian"
-
-- name: reconfigure for timezone on Gentoo
-  shell: emerge --config timezone-data
-  when: result.changed and ansible_os_family == "Gentoo"
-  
+- name: set timezone
+  timezone: name={{ timezone }}
+  notify: restart cron

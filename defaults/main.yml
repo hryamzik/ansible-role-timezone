@@ -1,1 +1,2 @@
 timezone: Europe/Moscow
+timezone_restart_cron: yes
